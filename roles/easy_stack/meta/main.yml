@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Mike Fomin
+  description: Make your stack easy
+  license: MIT
+  min_ansible_version: 2.2
+  platforms:
+  - name: Ubuntu
+  versions:
+  - trusty
+  categories:
+  - cloud
+  - system
+dependencies:

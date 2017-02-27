@@ -1,0 +1,10 @@
+# check python for ansible
+# check docker
+# project file structure
+# balanser
+
+ - include: each_service/build.yml
+   with_items: "{{services}}"
+      
+ - include: each_service/deploy.yml
+   with_items: "{{services}}"

@@ -1,0 +1,3 @@
+project_name: app
+remote_root: /root/
+abs_path: "{{playbook_dir}}"
