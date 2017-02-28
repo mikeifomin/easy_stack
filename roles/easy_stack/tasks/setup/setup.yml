@@ -1,0 +1,16 @@
+ - raw: "test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)"
+   remote_user: root
+   delegate_to: "{{current_host}}"
+
+ - command: docker -v 
+   register: res
+   ignore_errors: yes
+   remote_user: root
+   delegate_to: "{{current_host}}"
+
+ - include: packages.yml
+ # when: res.get('failed')
+
+ - include: db.yml
+ - include: balancer.yml
+

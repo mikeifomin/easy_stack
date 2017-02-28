@@ -1,0 +1,44 @@
+- apt: name={{item_pkg}}
+  loop_control:
+    loop_var: item_pkg
+  with_items:
+    - tmux
+    - curl
+    - tree
+    - htop
+    - mosh
+    - vim
+    - zsh
+    - git
+    - software-properties-common
+    - jq
+    - docker.io
+    - python-pip
+    # fix until ansible will not update docker_service        
+    #   - pip: name=docker state=absent
+  remote_user: root
+  delegate_to: "{{current_host}}"
+
+# temporary till bug fixing
+# https://github.com/ansible/ansible/issues/20492#issuecomment-274434986
+- pip: name={{item_pkg}} state=absent
+  loop_control:
+    loop_var: item_pkg
+  with_items:
+    - docker-py
+    - docker
+    - docker_compose
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- pip: name=docker_compose version=1.9 state=present
+  remote_user: root
+  delegate_to: "{{current_host}}"
+ 
+- name: Log into private registry
+  docker_login:
+    registry: "{{registry}}"
+    username: "{{registry_user}}"
+    password: "{{registry_pass}}"
+    reauthorize: yes    
+  remote_user: root
+  delegate_to: "{{current_host}}"

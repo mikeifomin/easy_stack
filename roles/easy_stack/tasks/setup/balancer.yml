@@ -1,0 +1,19 @@
+- file: dest=/root/balancer state=directory
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- template:
+    src: balancer.traefik.toml
+    dest: /root/balancer/traefik.toml
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- template:
+    src: balancer.docker-compose.yml
+    dest: /root/balancer/docker-compose.yml
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- docker_service:
+    project_src: /root/balancer
+    state: present
+    recreate: always
+  remote_user: root
+  delegate_to: "{{current_host}}"

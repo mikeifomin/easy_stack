@@ -1,0 +1,16 @@
+- file: dest=/root/db/mongo/data state=directory
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- file: dest=/root/db/redis/data state=directory
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- template:
+    src: db.docker-compose.yml
+    dest: /root/db/docker-compose.yml
+  remote_user: root
+  delegate_to: "{{current_host}}"
+- docker_service:
+    project_src: /root/db/
+    state: present
+  remote_user: root
+  delegate_to: "{{current_host}}"

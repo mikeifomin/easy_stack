@@ -1,0 +1,28 @@
+
+version: "2"
+networks:
+  db_default: 
+    external: true
+  balancer_default: {external: true}
+  
+services: 
+  node:
+    image: {{image_name}}
+    restart: always
+    labels:
+      - "traefik.backend={{stack_name}}"
+      - "traefik.port={{port}}"
+      - "traefik.frontend.rule=Host:{{domain}}"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.docker.network=balancer_default"
+    environment:
+      MONGO_URL:  {{MONGO_URL}}
+      MONGO_OPTLOG_URL: {{MONGO_OPTLOG_URL}}
+      ROOT_URL: https://{{domain}}
+{% for key, value in item.envs.items() %}
+      {{key}}: "{{value}}"
+{% endfor %}
+    networks:
+      - default
+      - db_default
+      - balancer_default

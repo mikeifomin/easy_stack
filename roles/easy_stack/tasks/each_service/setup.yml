@@ -1,0 +1,4 @@
+ - include: ../setup/setup.yml
+   delegate_to: "{{item.domain}}"
+   remote_user: root  
+
