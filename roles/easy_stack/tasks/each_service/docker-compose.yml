@@ -16,10 +16,7 @@ services:
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.docker.network=balancer_default"
     environment:
-      MONGO_URL:  {{MONGO_URL}}
-      MONGO_OPTLOG_URL: {{MONGO_OPTLOG_URL}}
-      ROOT_URL: https://{{domain}}
-{% for key, value in item.envs.items() %}
+{% for key, value in envs.items() %}
       {{key}}: "{{value}}"
 {% endfor %}
     networks:

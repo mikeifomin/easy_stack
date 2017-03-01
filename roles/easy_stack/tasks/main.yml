@@ -3,12 +3,13 @@
 # project file structure
 # balanser
 
-#- include: each_service/build.yml
-#  with_items: "{{services}}"
+ - include: each_service/build.yml
+   with_items: "{{services}}"
 
  - include: each_service/setup.yml
    current_host: "{{item.domain}}"
    with_items: "{{services}}"
+   when: skip_setup is not defined
  - include: each_service/deploy.yml
    current_host: "{{item.domain}}"
    with_items: "{{services}}"

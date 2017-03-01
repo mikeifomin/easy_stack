@@ -3,8 +3,13 @@
   - file: dest={{remote_path}} state=directory
     remote_user: root
     delegate_to: "{{current_host}}"
-  - set_fact: MONGO_URL="mongodb://mongodb/{{item.global_MONGO_URL_db_name}}"
-  - set_fact: MONGO_OPTLOG_URL=MONGO_URL
+  - set_fact: envs={{item.get('envs',{})}}
+  - set_fact: 
+      envs: "{{ envs | combine({MONGO_URL:item.global_MONGO_URL_db_name})}}"
+    when: item.get('global_MONGO_URL_db_name')
+  - set_fact: 
+      envs: "{{ envs | combine({MONGO_OPTLOG_URL:envs.MONGO_URL})}}"
+    when: envs.get('MONGO_URL')
   - template:
       dest: "{{remote_path}}docker-compose.yml"
       src: "docker-compose.yml"
