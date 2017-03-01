@@ -1,0 +1,11 @@
+--- 
+- hosts: localhost
+  vars_files:
+    - easy_stack.credentials.yml
+  roles:
+    - role: "../../roles/easy_stack"   
+      services:
+        - dir: /node
+          domain: test1.mif.io
+          envs:
+            PORT: 80
