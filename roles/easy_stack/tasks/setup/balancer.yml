@@ -14,6 +14,5 @@
 - docker_service:
     project_src: /root/balancer
     state: present
-    recreate: always
   remote_user: root
   delegate_to: "{{current_host}}"
