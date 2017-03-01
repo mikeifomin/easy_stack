@@ -7,10 +7,21 @@
    ignore_errors: yes
    remote_user: root
    delegate_to: "{{current_host}}"
-
+ - set_fact: docker_version={{res.get('stdout')}}
  - include: packages.yml
- # when: res.get('failed')
-
+   when: not docker_version
+ - include: docker.yml
+   when: not docker_version
+   
+   
+ - name: Log into private registry
+   docker_login:
+      registry: "{{registry}}"
+      username: "{{registry_user}}"
+      password: "{{registry_pass}}"
+      reauthorize: yes    
+   remote_user: root
+   delegate_to: "{{current_host}}"
  - include: db.yml
  - include: balancer.yml
 

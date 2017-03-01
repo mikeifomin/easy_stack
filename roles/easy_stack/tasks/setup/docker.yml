@@ -1,0 +1,33 @@
+---
+- name: APT | Install Prerequisits for APT
+  apt: name="{{ item_package }}" state=present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+  loop_control:
+    loop_var: item_package
+  remote_user: root
+  delegate_to: "{{current_host}}"
+
+- name: APT | Add Docker GPG Key
+  apt_key:
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+  remote_user: root
+  delegate_to: "{{current_host}}"
+
+- name: APT | Configure Docker repository
+  apt_repository:
+    repo: "deb https://apt.dockerproject.org/repo ubuntu-xenial main"
+    state: present
+  remote_user: root
+  delegate_to: "{{current_host}}"
+
+- name: APT | Install Docker Engine
+  apt: name=docker-engine state=present update_cache=yes
+  remote_user: root
+  delegate_to: "{{current_host}}"
+
+- pip: name=docker_compose state=present
+  remote_user: root
+  delegate_to: "{{current_host}}"
